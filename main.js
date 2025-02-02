@@ -8,15 +8,20 @@ const week = [
   'Воскресенье',
 ];
 
-const todayIndex = new Date().getDay();
+const todayIndex = new Date().getDay() === 0 ? 6 : new Date().getDay() - 1;
 
-const getFormatWeek = week.map(function (day, index) {
-  if (index === 5 || index === 6) {
-    return day.italics();
+for (let i = 1; i < 7; i++) {
+  let dayText = week[i];
+
+  if (i === todayIndex) {
+    dayText = `<b>${dayText}</b>`;
   }
-  if (todayIndex === index) {
-    return day.bold();
+
+  if (i === 5 || i === 6) {
+    dayText = `<i>${dayText}</i>`;
   }
-  return day;
-});
-document.body.innerHTML = getFormatWeek.join('<br>');
+
+  week[i] = dayText;
+}
+
+document.body.innerHTML = week.join('<br>');
