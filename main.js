@@ -41,19 +41,58 @@ function updateTime() {
     }
   }
 
-  const declination = function (hours) {
-    if (hours === 1) {
-      return 'час';
-    } else if (hours >= 2 && hours <= 4) {
-      return 'часа';
-    } else {
-      return 'часов';
+  function declination(num, unit) {
+    if (unit === 'hour') {
+      if (num % 10 === 1 && num % 100 !== 11) {
+        return 'час';
+      } else if (
+        num % 10 >= 2 &&
+        num % 10 <= 4 &&
+        (num % 100 < 10 || num % 100 >= 20)
+      ) {
+        return 'часа';
+      } else {
+        return 'часов';
+      }
     }
-  };
 
-  const realDateStr = `Сегодня ${dayWeek}, ${dayMonth} ${month} ${year} года, ${hours} ${declination(
+    if (unit === 'minute') {
+      if (num % 10 === 1 && num % 100 !== 11) {
+        return 'минута';
+      } else if (
+        num % 10 >= 2 &&
+        num % 10 <= 4 &&
+        (num % 100 < 10 || num % 100 >= 20)
+      ) {
+        return 'минуты';
+      } else {
+        return 'минут';
+      }
+    }
+
+    if (unit === 'second') {
+      if (num % 10 === 1 && num % 100 !== 11) {
+        return 'секунда';
+      } else if (
+        num % 10 >= 2 &&
+        num % 10 <= 4 &&
+        (num % 100 < 10 || num % 100 >= 20)
+      ) {
+        return 'секунды';
+      } else {
+        return 'секунд';
+      }
+    }
+
+    return '';
+  }
+
+  const realDateStr = `Сегодня ${dayWeek}, ${dayMonth} ${month} ${year} года, ${getZero(
     hours,
-  )} ${minutes} минут ${seconds} секунды`;
+  )} ${declination(hours, 'hour')} ${getZero(minutes)} ${declination(
+    minutes,
+    'minute',
+  )} ${getZero(seconds)} ${declination(seconds, 'second')}`;
   const realDateNum = `${getZero(dayMonth)}.${getZero(
     now.getMonth() + 1,
   )}.${year} - ${getZero(hours)}:${getZero(minutes)}:${getZero(seconds)}`;
@@ -61,6 +100,3 @@ function updateTime() {
 }
 updateTime();
 setInterval(updateTime, 1000);
-// const now = new Date();
-// // const dayMonth = now.getDate();
-// // console.log(dayMonth);
